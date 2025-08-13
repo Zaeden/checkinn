@@ -1,8 +1,24 @@
 import express, { Request, Response } from "express";
 import User from "../models/user.model";
 import { setToken } from "../utilities/token";
+import verifyToken from "../middlewares/auth";
 
 const userRouter = express.Router();
+
+userRouter.get("/me", verifyToken, async (req: Request, res: Response) => {
+  const userId = req.userId;
+
+  try {
+    const user = await User.findById(userId).select("-password");
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
 
 userRouter.post("/register", async (req: Request, res: Response) => {
   try {
