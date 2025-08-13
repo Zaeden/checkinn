@@ -5,9 +5,13 @@ import { BsBuilding, BsMap } from "react-icons/bs";
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
 
 const MyHotels = () => {
-  const { data: hotelData } = useQuery("getMyHotels", apiClient.getMyHotels, {
-    onError: () => {},
-  });
+  const { data: hotelData } = useQuery(
+    "fetchMyHotels",
+    apiClient.fetchMyHotels,
+    {
+      onError: () => {},
+    }
+  );
 
   if (!hotelData) {
     return <span>No hotels found.</span>;
